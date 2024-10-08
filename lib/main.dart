@@ -8,6 +8,7 @@ import 'package:peaceful_pulse_admin/admin/admin_officials_view.dart';
 import 'package:peaceful_pulse_admin/admin/admin_medicines_view.dart';
 import 'package:peaceful_pulse_admin/admin/splash_screen.dart';
 import 'package:peaceful_pulse_admin/bin/first_page_ui.dart';
+import 'package:peaceful_pulse_admin/bin/otp_test_login.dart';
 
 import 'firebase_options.dart';
 

@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../constants/custom_colors.dart';
 import '../database.dart';
@@ -36,21 +37,40 @@ class _AdminAddOfficialsState extends State<AdminAddOfficials> {
   String imageURL = '';
   Uint8List? _image;
 
-  Future<void> _pickImage() async {
-    try {
-      FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.image);
-      if (result == null) return;
+  // Future<void> _pickImage() async {
+  //   try {
+  //     FilePickerResult? result =
+  //         await FilePicker.platform.pickFiles(type: FileType.image);
+  //     if (result == null) return;
 
-      setState(() {
+  //     setState(() {
+  //       if (kIsWeb) {
+  //         _image = result.files.single.bytes;
+  //       } else {
+  //         selectedImage = File(result.files.single.path!);
+  //       }
+  //     });
+  //   } catch (e) {
+  //     log(e.toString());
+  //   }
+  // }
+  Future<void> imagePicking() async {
+    try {
+      final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedImage != null) {
         if (kIsWeb) {
-          _image = result.files.single.bytes;
+          _image = await pickedImage.readAsBytes();
         } else {
-          selectedImage = File(result.files.single.path!);
+          selectedImage = File(pickedImage.path);
         }
-      });
+      } else {
+        _image = null;
+        // _webImagess = null;
+      }
     } catch (e) {
-      log(e.toString());
+      log("Image picking failed: $e");
+      _image = null;
+      // _webImagess = null;
     }
   }
 
@@ -195,7 +215,7 @@ class _AdminAddOfficialsState extends State<AdminAddOfficials> {
                             children: [
                               TextButton(
                                   onPressed: () {
-                                    _pickImage();
+                                    imagePicking();
                                   },
                                   style: TextButton.styleFrom(
                                       shape: RoundedRectangleBorder(
@@ -236,6 +256,7 @@ class _AdminAddOfficialsState extends State<AdminAddOfficials> {
                                                   await uploadTask;
                                               imageURL = await snapshot.ref
                                                   .getDownloadURL();
+                                                  log("Kis web $imageURL");
                                             } catch (error) {
                                               print(error.toString());
                                             }
@@ -252,6 +273,7 @@ class _AdminAddOfficialsState extends State<AdminAddOfficials> {
                                                   await uploadTask;
                                               imageURL = await snapshot.ref
                                                   .getDownloadURL();
+                                                  log("Kis not web $imageURL");
                                             } catch (error) {
                                               print(error.toString());
                                             }

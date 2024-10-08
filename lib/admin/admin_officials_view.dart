@@ -69,12 +69,13 @@ class _AdminOfficialsViewState extends State<AdminOfficialsView> {
                                       Container(
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(10),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black,
-                                                blurRadius: 3.0,
-                                              )
-                                            ],
+                                            image: DecorationImage(image: NetworkImage(ds["Image"])),
+                                            // boxShadow: [
+                                            //   BoxShadow(
+                                            //     color: Colors.black,
+                                            //     blurRadius: 3.0,
+                                            //   )
+                                            // ],
                                         ),
                                         width: 90,
                                         height: 60,
